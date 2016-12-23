@@ -10,7 +10,7 @@ if sys.version_info >= (3, 0):
 else:
     enable_search = WHOOSH_ENABLED
     if enable_search:
-        import flask_whooshalchemy
+        import flask_whooshalchemy as whooshalchemy
 
 
 followers = db.Table(
@@ -107,7 +107,6 @@ class Post(db.Model):
 
     def __repr__(self):  # pragma: no cover
         return '<Post %r>' % (self.body)
-
 
 if enable_search:
     whooshalchemy.whoosh_index(app, Post)

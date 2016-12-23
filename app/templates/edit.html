@@ -5,7 +5,7 @@
     <h1>{{ _('Edit Your Profile') }}</h1>
     {% include 'flash.html' %}
     <div class="well">
-        <form class="form-horizontal" action="" method="post" name="edit">
+        <form class="form-horizontal" action="" method="post" name="edit" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <div class="control-group{% if form.nickname.errors %} error{% endif %}">
                 <label class="control-label" for="nickname">{{ _('Your nickname:') }}</label>
@@ -25,6 +25,16 @@
                     {% endfor %}
                 </div>
             </div>
+            <div class="control-group{% if form.my_picture.errors %} error{% endif %}">
+                <label class="control-label" for="my_picture">{{ _('My Picture :') }}</label>
+                <div class="controls">
+                    {{ form.my_picture(cols=64, rows=4, class="span4") }}
+                    {% for error in form.my_picture.errors %}
+                        <span class="help-inline">[{{ error }}]</span><br>
+                    {% endfor %}
+                </div>
+            </div>
+
             <div class="control-group">
                 <div class="controls">
                     <input class="btn btn-primary" type="submit" value="{{ _('Save Changes') }}">

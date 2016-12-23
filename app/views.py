@@ -12,7 +12,9 @@ from .emails import follower_notification
 from .translate import microsoft_translate
 from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS, LANGUAGES, \
     DATABASE_QUERY_TIMEOUT
-
+from werkzeug.utils import secure_filename
+import boto3
+from util.aws_utils import upload_to_s3
 
 @lm.user_loader
 def load_user(id):
@@ -148,6 +150,9 @@ def edit():
     if form.validate_on_submit():
         g.user.nickname = form.nickname.data
         g.user.about_me = form.about_me.data
+        filename = secure_filename(form.my_picture.data.filename)
+        form.my_picture.data.save('/tmp/' + filename)
+        upload_to_s3('/tmp/' + filename, g.user.nickname)
         db.session.add(g.user)
         db.session.commit()
         flash(gettext('Your changes have been saved.'))
